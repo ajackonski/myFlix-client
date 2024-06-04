@@ -6,27 +6,27 @@ export const MainView = () => {
   const [movies, setMovies] = useState([
     {
       id: 1,
-      title: "",
-      description: "",
-      genre: "",
-      image:"",
-      Director: "",
+      title: "The Thing",
+      description: "test",
+      genre: "Horror",
+      image: "https://upload.wikimedia.org/wikipedia/en/e/e3/The_Thing_%281982_film%29.png",
+      director: "John Carpenter",
     },
     {
       id: 2,
-      title: "",
-      description: "",
-      genre: "",
-      image:"",
-      Director: "",
+      title: "Starship Troopers",
+      description: "test",
+      genre: "Sci-fi",
+      image: "test",
+      director: "Paul Verhoeven",
     },
     {
       id: 3,
-      title: "",
-      description: "",
-      genre: "",
-      image:"",
-      Director: "",
+      title: "Seven Samurai",
+      description: "test",
+      genre: "Drama",
+      image: "test",
+      director: "Akira Kurosawa",
     },
   ]);
 
@@ -47,7 +47,7 @@ export const MainView = () => {
       {movies.map((movie) => (
         <MovieCard
           key={movie.id}
-          book={movie}
+          movie={movie}
           onMovieClick={(newSelectedMovie) => {
             setSelectedMovie(newSelectedMovie);
           }}
