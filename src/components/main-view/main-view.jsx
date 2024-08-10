@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import MovieCard from '../movie-card/movie-card'; // Assuming you display movies using a MovieCard component
+import MovieCard from '../movie-card/movie-card'; 
 
 const MainView = () => {
   const [movies, setMovies] = useState([]);
