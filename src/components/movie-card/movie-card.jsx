@@ -15,7 +15,6 @@ const MovieCard = ({ movie, onMovieClick }) => {
     );
 };
 
-export default MovieCard;
 
 // Adding PropTypes for the component
 MovieCard.propTypes = {
@@ -38,3 +37,4 @@ MovieCard.propTypes = {
   onMovieClick: PropTypes.func.isRequired,
 };
 
+export default MovieCard;

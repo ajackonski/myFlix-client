@@ -2980,7 +2980,7 @@ $RefreshReg$(_c, "App");
   window.$RefreshReg$ = prevRefreshReg;
   window.$RefreshSig$ = prevRefreshSig;
 }
-},{"react/jsx-dev-runtime":"iTorj","react-dom/client":"lOjBx","./components/main-view/main-view":"4gflv","./index.scss":"lJZlQ","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"5xUXd","@parcel/transformer-js/src/esmodule-helpers.js":"646Qa"}],"iTorj":[function(require,module,exports) {
+},{"react/jsx-dev-runtime":"iTorj","react-dom/client":"lOjBx","./components/main-view/main-view":"4gflv","./index.scss":"lJZlQ","@parcel/transformer-js/src/esmodule-helpers.js":"646Qa","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"5xUXd"}],"iTorj":[function(require,module,exports) {
 "use strict";
 module.exports = require("ee51401569654d91");
 
@@ -27241,6 +27241,7 @@ var _s = $RefreshSig$();
 const MainView = ()=>{
     _s();
     const [movies, setMovies] = (0, _react.useState)([]);
+    const [selectedMovie, setSelectedMovie] = (0, _react.useState)(null);
     const [loading, setLoading] = (0, _react.useState)(true);
     const [error, setError] = (0, _react.useState)(null);
     (0, _react.useEffect)(()=>{
@@ -27249,20 +27250,29 @@ const MainView = ()=>{
                 const response = await fetch("https://myflix-alex-8165b3d5447b.herokuapp.com/movies");
                 if (!response.ok) throw new Error(`Error: ${response.status}`);
                 const data = await response.json();
-                setMovies(data); // Store the fetched movies in state
+                setMovies(data);
             } catch (err) {
                 setError(err.message);
             } finally{
                 setLoading(false);
             }
         };
-        fetchMovies(); // Fetch movies when the component mounts
-    }, []); // Empty dependency array means this useEffect runs once after initial render
+        fetchMovies();
+    }, []);
+    const handleMovieClick = (movie)=>{
+        console.log("Movie selected:", movie);
+        setSelectedMovie(movie);
+    };
+    (0, _react.useEffect)(()=>{
+        console.log("Selected movie state updated:", selectedMovie);
+    }, [
+        selectedMovie
+    ]);
     if (loading) return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
         children: "Loading..."
     }, void 0, false, {
         fileName: "src/components/main-view/main-view.jsx",
-        lineNumber: 28,
+        lineNumber: 38,
         columnNumber: 23
     }, undefined);
     if (error) return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
@@ -27272,40 +27282,113 @@ const MainView = ()=>{
         ]
     }, void 0, true, {
         fileName: "src/components/main-view/main-view.jsx",
-        lineNumber: 29,
+        lineNumber: 39,
         columnNumber: 21
     }, undefined);
-    return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+    // Check if selectedMovie is updated, then show movie details
+    if (selectedMovie) return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
         children: [
-            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("h1", {
-                children: "Movie List"
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("h2", {
+                children: selectedMovie.title
             }, void 0, false, {
                 fileName: "src/components/main-view/main-view.jsx",
-                lineNumber: 33,
-                columnNumber: 7
+                lineNumber: 45,
+                columnNumber: 9
             }, undefined),
-            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
-                className: "movie-grid",
-                children: movies.map((movie)=>/*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _movieCardDefault.default), {
-                        movie: movie
-                    }, movie._id, false, {
-                        fileName: "src/components/main-view/main-view.jsx",
-                        lineNumber: 36,
-                        columnNumber: 11
-                    }, undefined))
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("img", {
+                src: selectedMovie.imagePath,
+                alt: selectedMovie.title,
+                style: {
+                    width: "300px",
+                    height: "450px"
+                }
             }, void 0, false, {
                 fileName: "src/components/main-view/main-view.jsx",
-                lineNumber: 34,
-                columnNumber: 7
+                lineNumber: 46,
+                columnNumber: 9
+            }, undefined),
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
+                children: [
+                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("strong", {
+                        children: "Genre:"
+                    }, void 0, false, {
+                        fileName: "src/components/main-view/main-view.jsx",
+                        lineNumber: 47,
+                        columnNumber: 12
+                    }, undefined),
+                    " ",
+                    selectedMovie.genre.name
+                ]
+            }, void 0, true, {
+                fileName: "src/components/main-view/main-view.jsx",
+                lineNumber: 47,
+                columnNumber: 9
+            }, undefined),
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
+                children: [
+                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("strong", {
+                        children: "Director:"
+                    }, void 0, false, {
+                        fileName: "src/components/main-view/main-view.jsx",
+                        lineNumber: 48,
+                        columnNumber: 12
+                    }, undefined),
+                    " ",
+                    selectedMovie.director.name
+                ]
+            }, void 0, true, {
+                fileName: "src/components/main-view/main-view.jsx",
+                lineNumber: 48,
+                columnNumber: 9
+            }, undefined),
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
+                children: [
+                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("strong", {
+                        children: "Description:"
+                    }, void 0, false, {
+                        fileName: "src/components/main-view/main-view.jsx",
+                        lineNumber: 49,
+                        columnNumber: 12
+                    }, undefined),
+                    " ",
+                    selectedMovie.description
+                ]
+            }, void 0, true, {
+                fileName: "src/components/main-view/main-view.jsx",
+                lineNumber: 49,
+                columnNumber: 9
+            }, undefined),
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
+                onClick: ()=>setSelectedMovie(null),
+                children: "Back to Movie List"
+            }, void 0, false, {
+                fileName: "src/components/main-view/main-view.jsx",
+                lineNumber: 50,
+                columnNumber: 9
             }, undefined)
         ]
     }, void 0, true, {
         fileName: "src/components/main-view/main-view.jsx",
-        lineNumber: 32,
+        lineNumber: 44,
+        columnNumber: 7
+    }, undefined);
+    return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+        className: "movie-grid",
+        children: movies.map((movie)=>/*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _movieCardDefault.default), {
+                movie: movie,
+                onMovieClick: handleMovieClick
+            }, movie._id, false, {
+                fileName: "src/components/main-view/main-view.jsx",
+                lineNumber: 58,
+                columnNumber: 9
+            }, undefined))
+    }, void 0, false, {
+        fileName: "src/components/main-view/main-view.jsx",
+        lineNumber: 56,
         columnNumber: 5
     }, undefined);
 };
-_s(MainView, "6wevkd2F3PCn4cJR5qV0d4ozTn8=");
+_s(MainView, "4yA2L8kVetTtAnXv5dWOExLfqeE=");
 _c = MainView;
 exports.default = MainView;
 var _c;
@@ -27343,7 +27426,6 @@ const MovieCard = ({ movie, onMovieClick })=>{
     }, undefined);
 };
 _c = MovieCard;
-exports.default = MovieCard;
 // Adding PropTypes for the component
 MovieCard.propTypes = {
     movie: (0, _propTypesDefault.default).shape({
@@ -27364,6 +27446,7 @@ MovieCard.propTypes = {
     }).isRequired,
     onMovieClick: (0, _propTypesDefault.default).func.isRequired
 };
+exports.default = MovieCard;
 var _c;
 $RefreshReg$(_c, "MovieCard");
 

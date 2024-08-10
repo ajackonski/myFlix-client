@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { MovieCard } from '../movie-card/movie-card';
+import MovieCard from '../movie-card/movie-card';
 
 const MainView = () => {
   const [movies, setMovies] = useState([]);
@@ -30,7 +30,28 @@ const MainView = () => {
     console.log('Movie selected:', movie);
     setSelectedMovie(movie);
   };
-  
+
+  useEffect(() => {
+    console.log('Selected movie state updated:', selectedMovie);
+  }, [selectedMovie]);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error}</p>;
+
+  // Check if selectedMovie is updated, then show movie details
+  if (selectedMovie) {
+    return (
+      <div>
+        <h2>{selectedMovie.title}</h2>
+        <img src={selectedMovie.imagePath} alt={selectedMovie.title} style={{ width: '300px', height: '450px' }} />
+        <p><strong>Genre:</strong> {selectedMovie.genre.name}</p>
+        <p><strong>Director:</strong> {selectedMovie.director.name}</p>
+        <p><strong>Description:</strong> {selectedMovie.description}</p>
+        <button onClick={() => setSelectedMovie(null)}>Back to Movie List</button>
+      </div>
+    );
+  }
+
   return (
     <div className="movie-grid">
       {movies.map((movie) => (
@@ -41,4 +62,3 @@ const MainView = () => {
 };
 
 export default MainView;
-
