@@ -1,9 +1,12 @@
 import PropTypes from 'prop-types';
 
-export const MovieCard = ({ movie, onMovieClick }) => {
+const MovieCard = ({ movie, onMovieClick }) => {
+    console.log('MovieCard received onMovieClick:', onMovieClick);
+
     return (
       <div
         onClick={() => {
+          console.log('Movie clicked:', movie);
           onMovieClick(movie);
         }}
       >
@@ -11,6 +14,8 @@ export const MovieCard = ({ movie, onMovieClick }) => {
       </div>
     );
 };
+
+export default MovieCard;
 
 // Adding PropTypes for the component
 MovieCard.propTypes = {
@@ -32,3 +37,4 @@ MovieCard.propTypes = {
   }).isRequired,
   onMovieClick: PropTypes.func.isRequired,
 };
+
