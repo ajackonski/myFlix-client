@@ -1,40 +1,19 @@
-import PropTypes from 'prop-types';
+import React from 'react';
+import { Card, Button } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
-const MovieCard = ({ movie, onMovieClick }) => {
-    console.log('MovieCard received onMovieClick:', onMovieClick);
-
-    return (
-      <div
-        onClick={() => {
-          console.log('Movie clicked:', movie);
-          onMovieClick(movie);
-        }}
-      >
-        {movie.title}
-      </div>
-    );
-};
-
-
-// Adding PropTypes for the component
-MovieCard.propTypes = {
-  movie: PropTypes.shape({
-    _id: PropTypes.string.isRequired,
-    title: PropTypes.string.isRequired,
-    imagePath: PropTypes.string.isRequired,
-    genre: PropTypes.shape({
-      name: PropTypes.string.isRequired,
-      description: PropTypes.string
-    }).isRequired,
-    director: PropTypes.shape({
-      name: PropTypes.string.isRequired,
-      bio: PropTypes.string
-    }).isRequired,
-    description: PropTypes.string.isRequired,
-    actors: PropTypes.arrayOf(PropTypes.string).isRequired,
-    featured: PropTypes.bool.isRequired
-  }).isRequired,
-  onMovieClick: PropTypes.func.isRequired,
+const MovieCard = ({ movie, addToFavorites }) => {
+  return (
+    <Card>
+      <Card.Body>
+        <Card.Title>{movie.Title}</Card.Title>
+        <Link to={`/movies/${movie._id}`}>
+          <Button variant="link">Open</Button>
+        </Link>
+        <Button onClick={() => addToFavorites(movie._id)}>Favorite</Button>
+      </Card.Body>
+    </Card>
+  );
 };
 
 export default MovieCard;
