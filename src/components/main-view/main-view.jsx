@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { LoginView } from '../login-view/login-view';
-import { SignupView } from '../signup-view/signup-view';
+import  SignupView  from '../signup-view/signup-view';
+import { Container, Row, Col, Button } from 'react-bootstrap';
 
 export function MainView() {
   const [user, setUser] = useState(null);
@@ -39,18 +40,35 @@ export function MainView() {
 
   if (!user) {
     return (
-      <div>
-        <LoginView onLoggedIn={onLoggedIn} />
-        <SignupView onSignedUp={onSignedUp} />
-      </div>
+      <Container>
+        <Row>
+          <Col>
+            <LoginView onLoggedIn={onLoggedIn} />
+          </Col>
+          <Col>
+            <SignupView onSignedUp={onSignedUp} />
+          </Col>
+        </Row>
+      </Container>
     );
   }
 
   return (
-    <div>
-      <button onClick={handleLogout}>Logout</button>
-      <div>{movies.map((m) => (<div key={m._id}>{m.Title}</div>))}</div>
-    </div>
+    <Container>
+      <Row className="mb-3">
+        <Col>
+          <Button onClick={handleLogout} variant="primary">Logout</Button>
+        </Col>
+      </Row>
+      <Row>
+        {movies.map((m) => (
+          <Col md={4} key={m._id} className="mb-4">
+            <div>{m.Title}</div>
+          </Col>
+        ))}
+      </Row>
+    </Container>
   );
 }
+
 
