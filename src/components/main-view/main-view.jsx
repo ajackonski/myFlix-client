@@ -1,74 +1,90 @@
 import React, { useState, useEffect } from 'react';
-import { LoginView } from '../login-view/login-view';
-import  SignupView  from '../signup-view/signup-view';
-import { Container, Row, Col, Button } from 'react-bootstrap';
+import { BrowserRouter as Router, Routes, Route, Navigate, Link } from 'react-router-dom';
+import { Navbar, Nav, Row, Col, Button, Container } from 'react-bootstrap';
+import MovieCard from '../movie-card/movie-card';
+import MovieView from '../movie-view/movie-view';
+import LoginView from '../login-view/login-view';
+import SignupView from '../signup-view/signup-view';
+import ProfileView from '../profile-view/profile-view';
+import { getMovies, loginUser } from '../../../apiService';
 
-export function MainView() {
+export const MainView = () => {
   const [user, setUser] = useState(null);
+  const [token, setToken] = useState(localStorage.getItem('token') || null);
   const [movies, setMovies] = useState([]);
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
     if (token) {
-      fetchMovies(token);
+      getMovies(token)
+        .then(response => setMovies(response.data))
+        .catch(err => console.error(err));
     }
-  }, []);
+  }, [token]);
 
-  const fetchMovies = (token) => {
-    fetch('https://myflix-alex-8165b3d5447b.herokuapp.com/movies', {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-      .then((response) => response.json())
-      .then((data) => setMovies(data))
-      .catch((err) => console.error(err));
-  };
-
-  const onLoggedIn = (token) => {
-    setUser(true);
-    fetchMovies(token);
-  };
-
-  const onSignedUp = (token) => {
-    setUser(true);
-    fetchMovies(token);
+  const handleLogin = (username, password) => {
+    loginUser(username, password)
+      .then(response => {
+        setUser(username);
+        setToken(response.data.token);
+        localStorage.setItem('token', response.data.token);
+      })
+      .catch(error => console.error('Login failed', error));
   };
 
   const handleLogout = () => {
-    localStorage.clear();
     setUser(null);
+    setToken(null);
+    localStorage.removeItem('token');
   };
 
-  if (!user) {
-    return (
+  return (
+    <Router>
+      <Navbar bg="dark" variant="dark" expand="lg" className="mb-4">
+        <Container>
+          <Navbar.Brand href="/">myFlix</Navbar.Brand>
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Collapse id="basic-navbar-nav">
+            <Nav className="ml-auto">
+              {!user ? (
+                <>
+                  <Nav.Link as={Link} to="/login">Login</Nav.Link>
+                  <Nav.Link as={Link} to="/signup">Signup</Nav.Link>
+                </>
+              ) : (
+                <>
+                  <Nav.Link as={Link} to="/">Home</Nav.Link>
+                  <Nav.Link as={Link} to="/profile">Profile</Nav.Link>
+                  <Nav.Link as={Button} onClick={handleLogout}>Logout</Nav.Link>
+                </>
+              )}
+            </Nav>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
+
       <Container>
-        <Row>
-          <Col>
-            <LoginView onLoggedIn={onLoggedIn} />
-          </Col>
-          <Col>
-            <SignupView onSignedUp={onSignedUp} />
-          </Col>
+        <Row className="main-view justify-content-md-center">
+          {!user ? (
+            <>
+              <Col md={4}>
+                <LoginView onLoggedIn={handleLogin} />
+              </Col>
+              <Col md={4}>
+                <SignupView />
+              </Col>
+            </>
+          ) : (
+            <Col>
+              <Routes>
+                <Route path="/" element={<MovieCard movies={movies} />} />
+                <Route path="/movies/:movieId" element={<MovieView />} />
+                <Route path="/profile" element={<ProfileView user={user} token={token} />} />
+                <Route path="*" element={<Navigate to="/" />} />
+              </Routes>
+            </Col>
+          )}
         </Row>
       </Container>
-    );
-  }
-
-  return (
-    <Container>
-      <Row className="mb-3">
-        <Col>
-          <Button onClick={handleLogout} variant="primary">Logout</Button>
-        </Col>
-      </Row>
-      <Row>
-        {movies.map((m) => (
-          <Col md={4} key={m._id} className="mb-4">
-            <div>{m.Title}</div>
-          </Col>
-        ))}
-      </Row>
-    </Container>
+    </Router>
   );
-}
-
-
+};

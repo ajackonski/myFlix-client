@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Form, Button, Alert } from 'react-bootstrap';
+import { loginUser } from '../../../apiService';
 
 export function LoginView({ onLoggedIn }) {
   const [username, setUsername] = useState('');
@@ -8,18 +9,11 @@ export function LoginView({ onLoggedIn }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const credentials = { Username: username, Password: password };
-
-    fetch('https://myflix-alex-8165b3d5447b.herokuapp.com/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(credentials),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.token) {
-          localStorage.setItem('token', data.token);
-          onLoggedIn(data.token);
+    loginUser(username, password)
+      .then((response) => {
+        if (response.data.token) {
+          localStorage.setItem('token', response.data.token);
+          onLoggedIn(username, password);
         } else {
           setError('Invalid username or password');
         }
@@ -60,3 +54,4 @@ export function LoginView({ onLoggedIn }) {
   );
 }
 
+export default LoginView;
