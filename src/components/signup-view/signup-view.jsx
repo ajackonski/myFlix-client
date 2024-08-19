@@ -13,7 +13,7 @@ export function SignupView({ onSignedUp }) {
     e.preventDefault();
 
     // Convert date format from mm-dd-yyyy to yyyy-mm-dd
-    const [mm, dd, yyyy] = birthday.split('-');
+    const [yyyy, mm, dd] = birthday.split('-');
     const formattedBirthday = `${yyyy}-${mm}-${dd}`;
 
     const user = { 
