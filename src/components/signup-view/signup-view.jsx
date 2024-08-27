@@ -14,7 +14,7 @@ export function SignupView({ onSignedUp }) {
 
     // Convert date format from mm-dd-yyyy to yyyy-mm-dd
     const [yyyy, mm, dd] = birthday.split('-');
-    const formattedBirthday = `${yyyy}-${mm}-${dd}`;
+    const formattedBirthday = `${yyyy}/${mm}/${dd}`;
 
     const user = { 
       Username: username, 
@@ -22,16 +22,28 @@ export function SignupView({ onSignedUp }) {
       Email: email, 
       Birthday: formattedBirthday 
     };
+    
+    console.log(user);
 
-    axios.post('https://myflix-alex-8165b3d5447b.herokuapp.com/users', user)
-      .then(response => {
-        if (response.data) {
-          onSignedUp();
-        } else {
-          setError('Failed to register');
-        }
-      })
-      .catch(() => setError('Something went wrong'));
+    axios.post('https://myflix-alex-8165b3d5447b.herokuapp.com/users', user, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(response => {
+      if (response.status === 201) {  // Assuming the server returns a 201 status for a successful creation
+        onSignedUp();
+      } else {
+        setError('Failed to register');
+      }
+    })
+    .catch(error => {
+      if (error.response && error.response.data && error.response.data.includes('duplicate key error')) {
+        setError('Username is already taken. Please choose another.');
+      } else {
+        setError('Something went wrong');
+      }
+    });
   };
 
   return (
