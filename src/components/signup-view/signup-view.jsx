@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Form, Button, Alert } from 'react-bootstrap';
+import axios from 'axios';
 
 export function SignupView({ onSignedUp }) {
   const [username, setUsername] = useState('');
@@ -10,23 +11,39 @@ export function SignupView({ onSignedUp }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const credentials = { Username: username, Password: password, Email: email, Birthday: birthday };
 
-    fetch('https://myflix-alex-8165b3d5447b.herokuapp.com/users', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(credentials),
+    // Convert date format from mm-dd-yyyy to yyyy-mm-dd
+    const [yyyy, mm, dd] = birthday.split('-');
+    const formattedBirthday = `${yyyy}/${mm}/${dd}`;
+
+    const user = { 
+      Username: username, 
+      Password: password, 
+      Email: email, 
+      Birthday: formattedBirthday 
+    };
+    
+    console.log(user);
+
+    axios.post('https://myflix-alex-8165b3d5447b.herokuapp.com/users', user, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
     })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.token) {
-          localStorage.setItem('token', data.token);
-          onSignedUp(data.token);
-        } else {
-          setError('Failed to register');
-        }
-      })
-      .catch(() => setError('Something went wrong'));
+    .then(response => {
+      if (response.status === 201) {  // Assuming the server returns a 201 status for a successful creation
+        onSignedUp();
+      } else {
+        setError('Failed to register');
+      }
+    })
+    .catch(error => {
+      if (error.response && error.response.data && error.response.data.includes('duplicate key error')) {
+        setError('Username is already taken. Please choose another.');
+      } else {
+        setError('Something went wrong');
+      }
+    });
   };
 
   return (
