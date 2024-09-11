@@ -1,5 +1,221 @@
-$color: steelblue;
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
 
-.my-flix {
-  color: $color;
+/* Main container styling for the login and signup view */
+.main-view-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #121212; /* Dark background */
+  color: #e0e0e0; /* Light text */
+  padding: 20px;
+}
+
+/* App Title Styling */
+.app-title {
+  font-size: 48px;
+  font-weight: bold;
+  color: #ffffff;
+  margin-bottom: 50px; /* Space between title and forms */
+  text-align: center;
+  font-family: 'Roboto', sans-serif;
+}
+
+/* Auth container for Login and Signup forms */
+.auth-container {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  max-width: 900px;
+  gap: 30px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+/* Form Container Styling */
+.login-container, .signup-container {
+  width: 100%;
+  max-width: 400px;
+  padding: 30px;
+  background-color: #1f1f1f; /* Dark gray background for form containers */
+  border-radius: 16px; /* Rounded corners */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+}
+
+/* Form elements styling */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Input field styling */
+input {
+  width: 100%;
+  padding: 12px;
+  background-color: #333333; /* Dark background for input fields */
+  border: 1px solid #555555; /* Dark border */
+  border-radius: 8px;
+  color: #ffffff;
+  font-size: 16px;
+  transition: border-color 0.2s;
+
+  &:focus {
+    border-color: #007bff; /* Light blue border on focus */
+    outline: none;
+  }
+}
+
+/* Button styling */
+button {
+  width: 100%;
+  padding: 12px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+  }
+}
+
+/* Form Titles */
+h2 {
+  text-align: center;
+  font-size: 24px;
+  color: #ffffff;
+  margin-bottom: 20px;
+  font-family: 'Roboto', sans-serif;
+}
+
+
+/* Form alignment */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Movies Grid Container (for MovieView) */
+.movies-container {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); /* Responsive grid with a minimum column size */
+  gap: 30px; /* Space between movie cards */
+  padding: 40px;
+  justify-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  background-color: #121212; /* Dark, neutral background */
+}
+
+/* Movie Card Styling (Neutral Cards) */
+.movie-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Ensure content is spaced out */
+  align-items: center;
+  background-color: #1f1f1f;
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 280px;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  height: 100%; /* Ensure all cards have equal height */
+
+  &:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+  }
+}
+
+/* Expandable Movie Information */
+.movie-info {
+  margin-top: 15px;
+  text-align: left;
+  font-size: 14px;
+  color: #e0e0e0;
+}
+
+/* Expand Button */
+.expand-btn {
+  background-color: #333333;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 14px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.2s ease-in-out;
+}
+
+/* Favorite Button */
+.favorite-btn {
+  background-color: #007bff; /* Blue for add to favorites */
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 14px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.2s ease-in-out;
+
+  &:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+  }
+
+  /* Change color when movie is added to favorites */
+  &.remove {
+    background-color: #ff6347; /* Tomato color for remove from favorites */
+  }
+
+  &.remove:hover {
+    background-color: #e5533d; /* Darker red on hover */
+  }
+}
+
+/* Movie Image Styling (Keeping Light Contrast) */
+.movie-image {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  filter: brightness(90%); /* Slightly darkened to match the theme */
+}
+
+/* Movie Title Styling (Light Text) */
+.movie-title {
+  font-family: 'Roboto', sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  color: #ffffff;
+  text-align: center;
+  margin-top: 10px;
+  letter-spacing: 0.5px;
+  min-height: 60px; /* Ensure all titles take up the same amount of space */
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Center the title text vertically */
+}
+
+/* Background Color for the Whole Page (Optional for Full Dark Theme) */
+body {
+  background-color: #121212; /* Dark background for the entire app */
+  color: #e0e0e0; /* Light text throughout */
 }

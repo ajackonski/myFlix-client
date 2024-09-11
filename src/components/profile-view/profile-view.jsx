@@ -1,62 +1,46 @@
-import React, { useState, useEffect } from 'react';
-import { Button, Form, Card } from 'react-bootstrap';
-import { getUser, updateUser, deleteUser } from '../../../apiService';
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateUserInfo, deleteUser } from '../../apiService';
+import { updateUserInfo as updateUserInfoAction, deleteUser as deleteUserAction } from '../../redux/slices/userSlice';
 
-export const ProfileView = ({ user, token }) => {
-  const [updatedUser, setUpdatedUser] = useState(user);
-  const [favoriteMovies, setFavoriteMovies] = useState([]);
+const ProfileView = () => {
+  const { userInfo, token } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (user) {
-      getUser(user, token)
-        .then(response => {
-          setUpdatedUser(response.data);
-          setFavoriteMovies(response.data.FavoriteMovies);
-        })
-        .catch(error => console.error('Failed to fetch user data', error));
-    }
-  }, [user, token]);
+  const [username, setUsername] = useState(userInfo.Username);
+  const [email, setEmail] = useState(userInfo.Email);
+  const [birthday, setBirthday] = useState(userInfo.Birthday);
 
   const handleUpdate = () => {
-    updateUser(user, updatedUser, token)
-      .then(() => alert('User updated successfully'))
-      .catch(error => console.error('Failed to update user', error));
+    const updatedData = { Username: username, Email: email, Birthday: birthday };
+    updateUserInfo(userInfo.Username, updatedData, token)
+      .then((data) => {
+        dispatch(updateUserInfoAction(data));
+        alert('Profile updated successfully');
+      })
+      .catch((err) => console.error(err));
   };
 
-  const handleDeregister = () => {
-    deleteUser(user, token)
+  const handleDelete = () => {
+    deleteUser(userInfo.Username, token)
       .then(() => {
-        alert('User deregistered successfully');
-        // Additional cleanup (e.g., logout, redirect)
+        dispatch(deleteUserAction());
+        alert('Account deleted successfully');
       })
-      .catch(error => console.error('Failed to deregister user', error));
+      .catch((err) => console.error(err));
   };
 
   return (
     <div>
-      <h1>Profile</h1>
-      <Form>
-        <Form.Group>
-          <Form.Label>Username</Form.Label>
-          <Form.Control value={updatedUser.Username} onChange={(e) => setUpdatedUser({ ...updatedUser, Username: e.target.value })} />
-        </Form.Group>
-        <Form.Group>
-          <Form.Label>Email</Form.Label>
-          <Form.Control value={updatedUser.Email} onChange={(e) => setUpdatedUser({ ...updatedUser, Email: e.target.value })} />
-        </Form.Group>
-        <Button onClick={handleUpdate}>Update</Button>
-        <Button variant="danger" onClick={handleDeregister}>Deregister</Button>
-      </Form>
-      <h2>Favorite Movies</h2>
-      {favoriteMovies.length > 0 ? (
-        favoriteMovies.map((movie) => (
-          <Card key={movie._id}>
-            <Card.Body>{movie.Title}</Card.Body>
-          </Card>
-        ))
-      ) : (
-        <p>No favorite movies added.</p>
-      )}
+      <h1>Profile Information</h1>
+      <label>Username:</label>
+      <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
+      <label>Email:</label>
+      <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+      <label>Birthday:</label>
+      <input type="date" value={birthday} onChange={(e) => setBirthday(e.target.value)} />
+      <button onClick={handleUpdate}>Update Profile</button>
+      <button onClick={handleDelete}>Delete Account</button>
     </div>
   );
 };
