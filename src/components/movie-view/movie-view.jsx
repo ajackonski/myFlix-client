@@ -1,16 +1,29 @@
-import React from 'react';
-import { Button } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getMovies } from '../../../apiService';
+import { fetchMoviesStart, fetchMoviesSuccess, fetchMoviesFailure } from '../../redux/slices/movieSlice';
+import MovieCard from '../movie-card/movie-card';
 
-export const MovieView = ({ movie, onBackClick, addToFavorites }) => {
+const MovieView = () => {
+  const dispatch = useDispatch();
+  const { movieList } = useSelector((state) => state.movies);
+
+  useEffect(() => {
+    dispatch(fetchMoviesStart());
+    getMovies()
+      .then((data) => {
+        dispatch(fetchMoviesSuccess(data));
+      })
+      .catch((err) => {
+        dispatch(fetchMoviesFailure(err.message));
+      });
+  }, [dispatch]);
+
   return (
-    <div>
-      <h1>{movie.Title}</h1>
-      <p>{movie.Description}</p>
-      <Link to="/">
-        <Button onClick={onBackClick}>Back</Button>
-      </Link>
-      <Button onClick={() => addToFavorites(movie._id)}>Favorite</Button>
+    <div className="movies-container">
+      {movieList.map((movie) => (
+        <MovieCard key={movie._id} movie={movie} />
+      ))}
     </div>
   );
 };

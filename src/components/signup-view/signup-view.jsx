@@ -1,103 +1,82 @@
 import React, { useState } from 'react';
-import { Form, Button, Alert } from 'react-bootstrap';
-import axios from 'axios';
+import { userSignup } from '../../../apiService';
 
-export function SignupView({ onSignedUp }) {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [email, setEmail] = useState('');
-  const [birthday, setBirthday] = useState('');
-  const [error, setError] = useState('');
+const SignupView = () => {
+  const [Username, setUsername] = useState(''); 
+  const [Password, setPassword] = useState(''); 
+  const [Email, setEmail] = useState('');
+  const [Birthday, setBirthday] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
-  const handleSubmit = (e) => {
+  // Email validation function
+  const validateEmail = (email) => {
+    const re = /\S+@\S+\.\S+/;
+    return re.test(email);
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Convert date format from mm-dd-yyyy to yyyy-mm-dd
-    const [yyyy, mm, dd] = birthday.split('-');
-    const formattedBirthday = `${yyyy}/${mm}/${dd}`;
+    // Basic client-side validation
+    if (Username === '' || Password === '' || Email === '' || Birthday === '') {
+      setErrorMessage('All fields are required');
+      return;
+    }
 
-    const user = { 
-      Username: username, 
-      Password: password, 
-      Email: email, 
-      Birthday: formattedBirthday 
-    };
-    
-    console.log(user);
+    if (!validateEmail(Email)) {
+      setErrorMessage('Invalid email format');
+      return;
+    }
 
-    axios.post('https://myflix-alex-8165b3d5447b.herokuapp.com/users', user, {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-    .then(response => {
-      if (response.status === 201) {  // Assuming the server returns a 201 status for a successful creation
-        onSignedUp();
-      } else {
-        setError('Failed to register');
-      }
-    })
-    .catch(error => {
-      if (error.response && error.response.data && error.response.data.includes('duplicate key error')) {
-        setError('Username is already taken. Please choose another.');
-      } else {
-        setError('Something went wrong');
-      }
-    });
+    if (Password.length < 5) {
+      setErrorMessage('Password must be at least 5 characters long');
+      return;
+    }
+
+    // Clear error message if validation passes
+    setErrorMessage('');
+
+    // Ensure data matches API's expected fields
+    const userData = { Username, Password, Email, Birthday };
+
+    try {
+      await userSignup(userData); // Call the API with the correct field names
+      alert('Signup successful!');
+    } catch (error) {
+      console.error('Error during signup:', error);
+    }
   };
 
   return (
-    <Form onSubmit={handleSubmit}>
-      <Form.Group controlId="formSignupUsername">
-        <Form.Label>Username</Form.Label>
-        <Form.Control
-          type="text"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          placeholder="Enter username"
-          required
-        />
-      </Form.Group>
-
-      <Form.Group controlId="formSignupPassword">
-        <Form.Label>Password</Form.Label>
-        <Form.Control
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="Enter password"
-          required
-        />
-      </Form.Group>
-
-      <Form.Group controlId="formSignupEmail">
-        <Form.Label>Email</Form.Label>
-        <Form.Control
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Enter email"
-          required
-        />
-      </Form.Group>
-
-      <Form.Group controlId="formSignupBirthday">
-        <Form.Label>Birthday</Form.Label>
-        <Form.Control
-          type="date"
-          value={birthday}
-          onChange={(e) => setBirthday(e.target.value)}
-          required
-        />
-      </Form.Group>
-
-      <Button variant="success" type="submit">
-        Sign Up
-      </Button>
-
-      {error && <Alert variant="danger" className="mt-3">{error}</Alert>}
-    </Form>
+    <form onSubmit={handleSubmit}>
+      {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>} {/* Display error message */}
+      <input
+        type="text"
+        value={Username}
+        onChange={(e) => setUsername(e.target.value)}
+        placeholder="Username"
+      />
+      <input
+        type="password"
+        value={Password}
+        onChange={(e) => setPassword(e.target.value)}
+        placeholder="Password"
+      />
+      <input
+        type="email"
+        value={Email}
+        onChange={(e) => setEmail(e.target.value)}
+        placeholder="Email"
+      />
+      <input
+        type="date"
+        value={Birthday}
+        onChange={(e) => setBirthday(e.target.value)}
+        placeholder="Birthday"
+      />
+      <button type="submit">Signup</button>
+    </form>
   );
-}
+};
 
 export default SignupView;

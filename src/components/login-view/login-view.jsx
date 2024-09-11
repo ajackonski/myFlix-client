@@ -1,57 +1,46 @@
+// login-view.jsx
+
 import React, { useState } from 'react';
-import { Form, Button, Alert } from 'react-bootstrap';
-import { loginUser } from '../../../apiService';
+import { useDispatch } from 'react-redux';
+import { userLogin } from '../../../apiService';
+import { loginStart, loginSuccess, loginFailure } from '../../redux/slices/userSlice';
 
-export function LoginView({ onLoggedIn }) {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+const LoginView = () => {
+  const [username, setUsername] = useState(''); // Lowercase key
+  const [password, setPassword] = useState(''); // Lowercase key
+  const dispatch = useDispatch();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    loginUser(username, password)
-      .then((response) => {
-        if (response.data.token) {
-          localStorage.setItem('token', response.data.token);
-          onLoggedIn(username, password);
-        } else {
-          setError('Invalid username or password');
-        }
-      })
-      .catch(() => setError('Something went wrong'));
+    dispatch(loginStart());
+
+    try {
+      const data = await userLogin({ username, password }); // Ensure lowercase keys are passed
+      dispatch(loginSuccess(data));
+    } catch (error) {
+      dispatch(loginFailure(error.message));
+    }
   };
 
   return (
-    <Form onSubmit={handleSubmit}>
-      <Form.Group controlId="formUsername">
-        <Form.Label>Username</Form.Label>
-        <Form.Control
+    <div>
+      <form onSubmit={handleSubmit}>
+        <input
           type="text"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
-          placeholder="Enter username"
-          required
+          placeholder="Username"
         />
-      </Form.Group>
-
-      <Form.Group controlId="formPassword">
-        <Form.Label>Password</Form.Label>
-        <Form.Control
+        <input
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          placeholder="Enter password"
-          required
+          placeholder="Password"
         />
-      </Form.Group>
-
-      <Button variant="primary" type="submit">
-        Login
-      </Button>
-
-      {error && <Alert variant="danger" className="mt-3">{error}</Alert>}
-    </Form>
+        <button type="submit">Login</button>
+      </form>
+    </div>
   );
-}
+};
 
 export default LoginView;
