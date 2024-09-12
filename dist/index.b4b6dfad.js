@@ -18026,7 +18026,9 @@ parcelHelpers.defineInteropFlag(exports);
 var _jsxDevRuntime = require("react/jsx-dev-runtime");
 var _react = require("react");
 var _reactDefault = parcelHelpers.interopDefault(_react);
+var _reactRedux = require("react-redux");
 var _apiService = require("../../../apiService");
+var _userSlice = require("../../redux/slices/userSlice");
 var _s = $RefreshSig$();
 const SignupView = ()=>{
     _s();
@@ -18081,7 +18083,7 @@ const SignupView = ()=>{
                 children: errorMessage
             }, void 0, false, {
                 fileName: "src/components/signup-view/signup-view.jsx",
-                lineNumber: 52,
+                lineNumber: 54,
                 columnNumber: 24
             }, undefined),
             " ",
@@ -18092,7 +18094,7 @@ const SignupView = ()=>{
                 placeholder: "Username"
             }, void 0, false, {
                 fileName: "src/components/signup-view/signup-view.jsx",
-                lineNumber: 53,
+                lineNumber: 55,
                 columnNumber: 7
             }, undefined),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("input", {
@@ -18102,7 +18104,7 @@ const SignupView = ()=>{
                 placeholder: "Password"
             }, void 0, false, {
                 fileName: "src/components/signup-view/signup-view.jsx",
-                lineNumber: 59,
+                lineNumber: 61,
                 columnNumber: 7
             }, undefined),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("input", {
@@ -18112,7 +18114,7 @@ const SignupView = ()=>{
                 placeholder: "Email"
             }, void 0, false, {
                 fileName: "src/components/signup-view/signup-view.jsx",
-                lineNumber: 65,
+                lineNumber: 67,
                 columnNumber: 7
             }, undefined),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("input", {
@@ -18122,7 +18124,7 @@ const SignupView = ()=>{
                 placeholder: "Birthday"
             }, void 0, false, {
                 fileName: "src/components/signup-view/signup-view.jsx",
-                lineNumber: 71,
+                lineNumber: 73,
                 columnNumber: 7
             }, undefined),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
@@ -18130,13 +18132,13 @@ const SignupView = ()=>{
                 children: "Signup"
             }, void 0, false, {
                 fileName: "src/components/signup-view/signup-view.jsx",
-                lineNumber: 77,
+                lineNumber: 79,
                 columnNumber: 7
             }, undefined)
         ]
     }, void 0, true, {
         fileName: "src/components/signup-view/signup-view.jsx",
-        lineNumber: 51,
+        lineNumber: 53,
         columnNumber: 5
     }, undefined);
 };
@@ -18151,7 +18153,7 @@ $RefreshReg$(_c, "SignupView");
   window.$RefreshReg$ = prevRefreshReg;
   window.$RefreshSig$ = prevRefreshSig;
 }
-},{"react/jsx-dev-runtime":"iTorj","react":"21dqq","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru","../../../apiService":"6tskW"}],"9xmpe":[function(require,module,exports) {
+},{"react/jsx-dev-runtime":"iTorj","react":"21dqq","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru","../../../apiService":"6tskW","../../redux/slices/userSlice":"ejUwB","react-redux":"62sf7"}],"9xmpe":[function(require,module,exports) {
 /**
  * React Router DOM v6.26.1
  *
