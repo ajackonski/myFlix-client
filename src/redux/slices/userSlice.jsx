@@ -38,6 +38,10 @@ const userSlice = createSlice({
     deleteUser: (state) => {
       state.userInfo = null;
     },
+    logoutUser: (state) => {
+      state.userInfo = null; // Clear the user info on logout
+      state.error = null; // Optionally, clear any errors as well
+    },
   },
 });
 
@@ -50,6 +54,7 @@ export const {
   loginFailure,
   updateUserInfo,
   deleteUser,
+  logoutUser, // Export logoutUser action
 } = userSlice.actions;
 
 export default userSlice.reducer;

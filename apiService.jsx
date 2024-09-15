@@ -58,7 +58,7 @@ export const getMovieByTitle = async (title) => {
 // Update User Info
 export const updateUserInfo = async (username, userData, token) => {
   try {
-    const response = await axios.put(`${API_URL}/users/${username}`, userData, {
+    const response = await axios.put(`/${API_URL}/users/${username}`, userData, {
       headers: { Authorization: `Bearer ${token}` },
     });
     return response.data;
