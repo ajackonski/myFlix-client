@@ -37,7 +37,7 @@
   }
 }
 
-.login-container, .signup-container {
+.signup-container, .login-container {
   background-color: #1f1f1f;
   border-radius: 16px;
   width: 100%;
@@ -116,6 +116,7 @@ h2 {
 
 .navbar-custom {
   background-color: #343a40;
+  height: 100px;
   padding: .75rem 1rem;
   font-family: Roboto, sans-serif;
 }
@@ -141,6 +142,11 @@ h2 {
 .navbar-custom .logout-btn {
   background-color: #0000;
   border-color: #fff;
+  justify-content: center;
+  align-items: flex-start;
+  max-width: 75px;
+  margin-top: -50px;
+  margin-left: 1793px;
   color: #fff !important;
 }
 
