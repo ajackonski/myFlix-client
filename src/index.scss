@@ -41,7 +41,16 @@
 }
 
 /* Form Container Styling */
-.login-container, .signup-container {
+.signup-container {
+  width: 100%;
+  max-width: 400px;
+  padding: 30px;
+  background-color: #1f1f1f; /* Dark gray background for form containers */
+  border-radius: 16px; /* Rounded corners */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+}
+
+.login-container {
   width: 100%;
   max-width: 400px;
   padding: 30px;
@@ -130,6 +139,7 @@ h2 {
   background-color: #343a40; // Dark background
   padding: 0.75rem 1rem; // Adjust padding for a neat layout
   font-family: 'Roboto', sans-serif; // Apply Roboto font to navbar
+  height: 100px;
 
   .navbar-nav {
     list-style: none; // Remove bullets
@@ -149,10 +159,14 @@ h2 {
   }
 
   .logout-btn {
+    margin-top: -50px;
+    align-items: flex-start;
     color: #ffffff !important;
     background-color: transparent;
     border-color: #ffffff;
-    
+    max-width: 75px;
+    margin-left: 1793px;
+    justify-content: center;
     &:hover {
       background-color: #00bfff !important; // Hover effect for the button
       color: #ffffff !important;
